@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 object Services
+
 @Serializable
-object Settings
+data class Settings(val id: String)

@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import hr.nullsafe.ernietechtask.Services
 import hr.nullsafe.ernietechtask.Settings
 import hr.nullsafe.ernietechtask.ui.services.ServicesHostScreen
+import hr.nullsafe.ernietechtask.ui.settings.SettingsHostScreen
 import hr.nullsafe.ernietechtask.ui.theme.ErnieTechTaskTheme
 
 class MainActivity : ComponentActivity() {
@@ -43,18 +44,13 @@ fun MainScreenHost(
         startDestination = Services
     ) {
         composable<Services> {
-            ServicesHostScreen {
-                navController.navigate(Settings)
+            ServicesHostScreen { serviceId ->
+                navController.navigate(Settings(serviceId))
             }
         }
 
         composable<Settings> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text("Settings")
-            }
+            SettingsHostScreen()
         }
     }
 }

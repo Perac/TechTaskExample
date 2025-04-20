@@ -38,7 +38,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ServicesHostScreen(
     viewModel: ServicesViewModel = koinViewModel(),
-    onServiceClick: () -> Unit
+    onServiceClick: (String) -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
@@ -63,7 +63,7 @@ fun ServicesHostScreen(
 @Composable
 fun ServicesScreen(
     serviceList: List<Service>,
-    onServiceClick: () -> Unit,
+    onServiceClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -84,7 +84,7 @@ fun ServicesScreen(
 @Composable
 fun ServiceListItem(
     service: Service,
-    onServiceClick: () -> Unit,
+    onServiceClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -120,7 +120,7 @@ fun ServiceListItem(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            Button(onClick = { onServiceClick() }) {
+            Button(onClick = { onServiceClick(service.id) }) {
                 Text("Manage")
             }
         }
