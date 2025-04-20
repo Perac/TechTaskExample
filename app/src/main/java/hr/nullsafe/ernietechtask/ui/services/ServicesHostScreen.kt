@@ -1,12 +1,37 @@
 package hr.nullsafe.ernietechtask.ui.services
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
+import hr.nullsafe.ernietechtask.R
+import hr.nullsafe.ernietechtask.data.Service
+import hr.nullsafe.ernietechtask.ui.ErrorComposable
+import hr.nullsafe.ernietechtask.ui.LoadingComposable
+import hr.nullsafe.ernietechtask.ui.UiState
 import hr.nullsafe.ernietechtask.viewmodel.ServicesViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -15,12 +40,89 @@ fun ServicesHostScreen(
     viewModel: ServicesViewModel = koinViewModel(),
     onServiceClick: () -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+
+    when (uiState.state) {
+        is UiState.Error -> {
+            ErrorComposable(
+                errorMessage = uiState.state.errorMessage,
+                onRetry = {}
+            )
+        }
+
+        is UiState.Loading<*> -> {
+            LoadingComposable()
+        }
+
+        is UiState.Success<List<Service>> -> {
+            ServicesScreen(uiState.state.data, onServiceClick)
+        }
+    }
+}
+
+@Composable
+fun ServicesScreen(
+    serviceList: List<Service>,
+    onServiceClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Scaffold(
+        contentWindowInsets = WindowInsets.safeContent,
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            items(serviceList, key = { it.id }) {
+                ServiceListItem(it, onServiceClick)
+            }
+        }
+    }
+}
+
+@Composable
+fun ServiceListItem(
+    service: Service,
+    onServiceClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        TextButton(onClick = onServiceClick) {
-            Text("Services")
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AsyncImage(
+                model = service.icon,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(id = R.drawable.ic_placeholder),
+                error = painterResource(id = R.drawable.ic_error)
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Text(
+                text = service.name,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.weight(1f)
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(onClick = { onServiceClick() }) {
+                Text("Manage")
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package hr.nullsafe.ernietechtask.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import hr.nullsafe.ernietechtask.BuildConfig
+import hr.nullsafe.ernietechtask.data.ServicesRepository
 import hr.nullsafe.ernietechtask.network.LocalJsonInterceptor
 import hr.nullsafe.ernietechtask.network.TechTaskService
 import hr.nullsafe.ernietechtask.viewmodel.ServicesViewModel
@@ -41,6 +42,8 @@ val appModule = module {
             .build()
             .create(TechTaskService::class.java)
     }
+
+    singleOf(::ServicesRepository)
 
     singleOf(::ServicesViewModel)
 }
