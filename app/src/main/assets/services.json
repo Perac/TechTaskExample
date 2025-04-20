@@ -1,0 +1,55 @@
+{
+  "services": [
+    {
+      "id": "google",
+      "name": "Google",
+      "icon": "https://poc-django-bucket.s3.amazonaws.com/media/images/digital_services/small/Google.png",
+      "settings": [
+        {
+          "id": "ad_personalization",
+          "name": "Ad Personalization",
+          "enabled": true
+        },
+        {
+          "id": "location_history",
+          "name": "Location History",
+          "enabled": false
+        }
+      ]
+    },
+    {
+      "id": "facebook",
+      "name": "Facebook",
+      "icon": "https://poc-django-bucket.s3.amazonaws.com/media/images/digital_services/small/Facebook.png",
+      "settings": [
+        {
+          "id": "profile_visibility",
+          "name": "Profile Visibility",
+          "enabled": true
+        },
+        {
+          "id": "data_download",
+          "name": "Data Download Allowed",
+          "enabled": false
+        }
+      ]
+    },
+    {
+      "id": "linkedin",
+      "name": "LinkedIn",
+      "icon": "https://poc-django-bucket.s3.amazonaws.com/media/images/digital_services/small/LinkedIn_logo_initials.png",
+      "settings": [
+        {
+          "id": "job_alerts",
+          "name": "Job Alerts",
+          "enabled": true
+        },
+        {
+          "id": "profile_tracking",
+          "name": "Who Viewed Your Profile",
+          "enabled": false
+        }
+      ]
+    }
+  ]
+}
