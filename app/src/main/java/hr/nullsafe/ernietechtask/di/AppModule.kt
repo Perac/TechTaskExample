@@ -4,10 +4,12 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import hr.nullsafe.ernietechtask.BuildConfig
 import hr.nullsafe.ernietechtask.network.LocalJsonInterceptor
 import hr.nullsafe.ernietechtask.network.TechTaskService
+import hr.nullsafe.ernietechtask.viewmodel.ServicesViewModel
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
@@ -39,4 +41,6 @@ val appModule = module {
             .build()
             .create(TechTaskService::class.java)
     }
+
+    singleOf(::ServicesViewModel)
 }

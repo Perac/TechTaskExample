@@ -23,11 +23,11 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField("String", "API_BASE_URL", "SOME_FAKE_URL")
+            buildConfigField("String", "API_BASE_URL", "\"https://SOME_FAKE_URL\"")
         }
 
         release {
-            buildConfigField("String", "API_BASE_URL", "REAL_PRODUCTION_URL")
+            buildConfigField("String", "API_BASE_URL", "\"https://REAL_PRODUCTION_URL\"")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
