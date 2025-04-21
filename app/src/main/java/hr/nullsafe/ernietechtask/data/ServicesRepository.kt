@@ -1,6 +1,8 @@
 package hr.nullsafe.ernietechtask.data
 
 import hr.nullsafe.ernietechtask.network.TechTaskService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class ServicesRepository(
     private val apiService: TechTaskService,
@@ -28,15 +30,17 @@ class ServicesRepository(
         return services
     }
 
-    suspend fun getAllSettings(serviceId: String): List<Settings> {
+    fun getAllSettings(serviceId: String): Flow<List<Settings>> {
         return settingsDAO
             .findAllSettings(serviceId)
             .map { settings ->
-                Settings(
-                    settings.settingsId,
-                    settings.settingsName,
-                    settings.enabled
-                )
+                settings.map { setting ->
+                    Settings(
+                        setting.settingsId,
+                        setting.settingsName,
+                        setting.enabled
+                    )
+                }
             }
     }
 

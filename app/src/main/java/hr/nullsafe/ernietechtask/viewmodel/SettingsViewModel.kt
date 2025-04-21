@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hr.nullsafe.ernietechtask.DispatcherSettings
 import hr.nullsafe.ernietechtask.data.ServicesRepository
 import hr.nullsafe.ernietechtask.data.Settings
 import hr.nullsafe.ernietechtask.ui.UiState
@@ -13,13 +12,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val servicesRepository: ServicesRepository,
-    private val dispatcherSettings: DispatcherSettings,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -28,18 +25,19 @@ class SettingsViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            val response = fetchSettings()
-
-            updateUI(response)
-        }
+        initData()
     }
 
-    private suspend fun fetchSettings(): List<Settings> =
-        withContext(dispatcherSettings.ioDispatcher()) {
-            if (serviceId == null) return@withContext listOf()
-            return@withContext servicesRepository.getAllSettings(serviceId)
+    private fun initData() {
+        if (serviceId == null) return
+        viewModelScope.launch {
+            servicesRepository
+                .getAllSettings(serviceId)
+                .collect {
+                    updateUI(it)
+                }
         }
+    }
 
     private fun updateUI(settingsList: List<Settings>) {
         _uiState.update { it.copy(state = UiState.Success(settingsList)) }
@@ -49,9 +47,6 @@ class SettingsViewModel @Inject constructor(
         if (serviceId == null) return
         viewModelScope.launch {
             servicesRepository.toggleSettings(serviceId, settingsId, enabled)
-
-            val response = fetchSettings()
-            updateUI(response)
         }
     }
 }
