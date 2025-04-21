@@ -7,11 +7,11 @@ class ServicesRepository(
     private val settingsDAO: SettingsDAO
 ) {
 
-    suspend fun fetchServices(): List<Service> {
+    suspend fun fetchServices(): List<Service>? {
 
-        val services = apiService.fetchServices().services
+        val services = apiService.fetchServices()?.services
 
-        services.forEach { service ->
+        services?.forEach { service ->
             service.settings.forEach { settings ->
                 settingsDAO.insertSettings(
                     SettingsDTO(

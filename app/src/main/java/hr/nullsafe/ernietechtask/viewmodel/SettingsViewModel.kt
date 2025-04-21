@@ -3,16 +3,20 @@ package hr.nullsafe.ernietechtask.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import hr.nullsafe.ernietechtask.DispatcherSettings
 import hr.nullsafe.ernietechtask.data.ServicesRepository
+import hr.nullsafe.ernietechtask.data.Settings
 import hr.nullsafe.ernietechtask.ui.UiState
 import hr.nullsafe.ernietechtask.ui.settings.SettingsUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SettingsViewModel(
     private val servicesRepository: ServicesRepository,
+    private val dispatcherSettings: DispatcherSettings,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -22,17 +26,20 @@ class SettingsViewModel(
 
     init {
         viewModelScope.launch {
-            fetchSettings()
+            val response = fetchSettings()
+
+            updateUI(response)
         }
     }
 
-    private suspend fun fetchSettings() {
-        if (serviceId == null) return
-        val settingsList = servicesRepository.getAllSettings(serviceId)
+    private suspend fun fetchSettings(): List<Settings> =
+        withContext(dispatcherSettings.ioDispatcher()) {
+            if (serviceId == null) return@withContext listOf()
+            return@withContext servicesRepository.getAllSettings(serviceId)
+        }
 
+    private fun updateUI(settingsList: List<Settings>) {
         _uiState.update { it.copy(state = UiState.Success(settingsList)) }
-
-        println(settingsList)
     }
 
     fun toggleSettings(settingsId: String, enabled: Boolean) {
@@ -40,7 +47,8 @@ class SettingsViewModel(
         viewModelScope.launch {
             servicesRepository.toggleSettings(serviceId, settingsId, enabled)
 
-            fetchSettings()
+            val response = fetchSettings()
+            updateUI(response)
         }
     }
 }

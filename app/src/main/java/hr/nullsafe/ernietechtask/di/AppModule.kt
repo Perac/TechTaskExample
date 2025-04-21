@@ -3,7 +3,9 @@ package hr.nullsafe.ernietechtask.di
 import android.app.Application
 import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import hr.nullsafe.ernietechtask.AppDispatchers
 import hr.nullsafe.ernietechtask.BuildConfig
+import hr.nullsafe.ernietechtask.DispatcherSettings
 import hr.nullsafe.ernietechtask.data.ServicesRepository
 import hr.nullsafe.ernietechtask.data.SettingsDAO
 import hr.nullsafe.ernietechtask.data.TechTaskDatabase
@@ -60,6 +62,10 @@ val appModule = module {
 
     single<SettingsDAO> {
         get<TechTaskDatabase>().settingsDao()
+    }
+
+    single<DispatcherSettings> {
+        AppDispatchers()
     }
 
     singleOf(::ServicesRepository)

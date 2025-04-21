@@ -29,6 +29,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import hr.nullsafe.ernietechtask.R
 import hr.nullsafe.ernietechtask.data.Service
+import hr.nullsafe.ernietechtask.ui.Dimensions.CARD_ELEVATION
+import hr.nullsafe.ernietechtask.ui.Dimensions.PADDING_DEFAULT
+import hr.nullsafe.ernietechtask.ui.Dimensions.PADDING_MINI
+import hr.nullsafe.ernietechtask.ui.Dimensions.PADDING_SMALL
+import hr.nullsafe.ernietechtask.ui.Dimensions.SERVICE_IMAGE_SIZE
 import hr.nullsafe.ernietechtask.ui.ErrorComposable
 import hr.nullsafe.ernietechtask.ui.LoadingComposable
 import hr.nullsafe.ernietechtask.ui.UiState
@@ -46,7 +51,9 @@ fun ServicesHostScreen(
         is UiState.Error -> {
             ErrorComposable(
                 errorMessage = uiState.state.errorMessage,
-                onRetry = {}
+                onRetry = {
+                    viewModel.retryDataFetch()
+                }
             )
         }
 
@@ -90,27 +97,27 @@ fun ServiceListItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            .padding(horizontal = PADDING_SMALL.dp, vertical = PADDING_MINI.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = CARD_ELEVATION.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(PADDING_DEFAULT.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
                 model = service.icon,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(SERVICE_IMAGE_SIZE.dp)
                     .clip(CircleShape),
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(id = R.drawable.ic_placeholder),
                 error = painterResource(id = R.drawable.ic_error)
             )
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(PADDING_DEFAULT.dp))
 
             Text(
                 text = service.name,
@@ -118,7 +125,7 @@ fun ServiceListItem(
                 modifier = Modifier.weight(1f)
             )
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(PADDING_DEFAULT.dp))
 
             Button(onClick = { onServiceClick(service.id) }) {
                 Text("Manage")

@@ -22,6 +22,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import hr.nullsafe.ernietechtask.data.Settings
+import hr.nullsafe.ernietechtask.ui.Dimensions.PADDING_DEFAULT
+import hr.nullsafe.ernietechtask.ui.Dimensions.PADDING_MEDIUM
 import hr.nullsafe.ernietechtask.ui.ErrorComposable
 import hr.nullsafe.ernietechtask.ui.LoadingComposable
 import hr.nullsafe.ernietechtask.ui.UiState
@@ -94,7 +96,7 @@ fun SettingsListItem(
                 onValueChange = onCheckedChange,
                 role = Role.Checkbox
             )
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = PADDING_DEFAULT.dp, vertical = PADDING_MEDIUM.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -102,7 +104,7 @@ fun SettingsListItem(
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.weight(1f)
         )
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(PADDING_DEFAULT.dp))
         Checkbox(
             checked = settings.enabled,
             onCheckedChange = null

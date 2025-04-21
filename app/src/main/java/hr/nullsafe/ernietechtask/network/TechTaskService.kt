@@ -6,5 +6,5 @@ import retrofit2.http.GET
 interface TechTaskService {
 
     @GET("services")
-    suspend fun fetchServices(): ServiceApiResponse
+    suspend fun fetchServices(): ServiceApiResponse?
 }
