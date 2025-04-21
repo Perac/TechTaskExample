@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import hr.nullsafe.ernietechtask.R
@@ -38,11 +39,10 @@ import hr.nullsafe.ernietechtask.ui.ErrorComposable
 import hr.nullsafe.ernietechtask.ui.LoadingComposable
 import hr.nullsafe.ernietechtask.ui.UiState
 import hr.nullsafe.ernietechtask.viewmodel.ServicesViewModel
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ServicesHostScreen(
-    viewModel: ServicesViewModel = koinViewModel(),
+    viewModel: ServicesViewModel = hiltViewModel(),
     onServiceClick: (String) -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value

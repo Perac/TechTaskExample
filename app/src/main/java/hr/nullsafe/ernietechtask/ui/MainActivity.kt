@@ -10,12 +10,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import hr.nullsafe.ernietechtask.Services
 import hr.nullsafe.ernietechtask.Settings
 import hr.nullsafe.ernietechtask.ui.services.ServicesHostScreen
 import hr.nullsafe.ernietechtask.ui.settings.SettingsHostScreen
 import hr.nullsafe.ernietechtask.ui.theme.ErnieTechTaskTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

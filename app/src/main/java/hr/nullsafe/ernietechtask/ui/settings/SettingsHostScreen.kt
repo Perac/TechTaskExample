@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import hr.nullsafe.ernietechtask.data.Settings
 import hr.nullsafe.ernietechtask.ui.Dimensions.PADDING_DEFAULT
@@ -28,11 +29,10 @@ import hr.nullsafe.ernietechtask.ui.ErrorComposable
 import hr.nullsafe.ernietechtask.ui.LoadingComposable
 import hr.nullsafe.ernietechtask.ui.UiState
 import hr.nullsafe.ernietechtask.viewmodel.SettingsViewModel
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SettingsHostScreen(
-    viewModel: SettingsViewModel = koinViewModel(),
+    viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 

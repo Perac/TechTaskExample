@@ -2,6 +2,7 @@ package hr.nullsafe.ernietechtask.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import hr.nullsafe.ernietechtask.DispatcherSettings
 import hr.nullsafe.ernietechtask.data.ServicesRepository
 import hr.nullsafe.ernietechtask.ui.UiState
@@ -11,8 +12,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class ServicesViewModel(
+@HiltViewModel
+class ServicesViewModel @Inject constructor(
     private val servicesRepository: ServicesRepository,
     private val dispatcherSettings: DispatcherSettings
 ) : ViewModel() {
