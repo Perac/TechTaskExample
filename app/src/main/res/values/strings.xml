@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ErnieTechTask</string>
+    <string name="label_manage">Manage</string>
+    <string name="label_default_loading_data">Loading data...</string>
 </resources>

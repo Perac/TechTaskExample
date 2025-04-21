@@ -23,7 +23,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -108,10 +110,11 @@ fun ServiceListItem(
         ) {
             AsyncImage(
                 model = service.icon,
-                contentDescription = null,
+                contentDescription = "${service.name} image",
                 modifier = Modifier
                     .size(SERVICE_IMAGE_SIZE.dp)
-                    .clip(CircleShape),
+                    .clip(CircleShape)
+                    .testTag("serviceImage"),
                 contentScale = ContentScale.Crop,
                 placeholder = painterResource(id = R.drawable.ic_placeholder),
                 error = painterResource(id = R.drawable.ic_error)
@@ -122,13 +125,18 @@ fun ServiceListItem(
             Text(
                 text = service.name,
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    .testTag("serviceName")
             )
 
             Spacer(modifier = Modifier.width(PADDING_DEFAULT.dp))
 
-            Button(onClick = { onServiceClick(service.id) }) {
-                Text("Manage")
+            Button(
+                onClick = { onServiceClick(service.id) },
+                modifier = Modifier.testTag("manageButton")
+            ) {
+                Text(stringResource(R.string.label_manage))
             }
         }
     }

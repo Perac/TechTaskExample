@@ -18,15 +18,20 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import hr.nullsafe.ernietechtask.R
 
 @Composable
 fun LoadingComposable(
     modifier: Modifier = Modifier,
-    loadingMessage: String = "Loading data..."
+    loadingMessage: String = stringResource(R.string.label_default_loading_data)
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .testTag("loadingIndicator"),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -52,7 +57,9 @@ fun ErrorComposable(
         Icon(
             imageVector = Icons.Default.Warning,
             contentDescription = "Error Icon",
-            modifier = Modifier.size(64.dp),
+            modifier = Modifier
+                .size(64.dp)
+                .testTag("errorIcon"),
             tint = MaterialTheme.colorScheme.error
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -60,10 +67,14 @@ fun ErrorComposable(
             text = errorMessage,
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.error
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.testTag("errorMessage")
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onRetry) {
+        Button(
+            onClick = onRetry,
+            modifier = Modifier.testTag("retryButton")
+        ) {
             Text("Retry")
         }
     }
